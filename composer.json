@@ -1,0 +1,23 @@
+{
+    "name": "pablodip/admin-module-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony PablodipAdminModuleBundle",
+    "keywords": ["modules", "reusability"],
+    "homepage": "https://github.com/pablodip/PablodipAdminModuleBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pablo Díez",
+            "email": "pablodip@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.0.*",
+        "pablodip/module-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Pablodip\\AdminModuleBundle": "" }
+    },
+    "target-dir": "Pablodip/AdminModuleBundle"
+}
