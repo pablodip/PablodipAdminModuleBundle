@@ -1,0 +1,6 @@
+Model\PablodipAdminModuleTestBundle\Article:
+    idGenerator: sequence
+    fields:
+        title:    { type: string, validation: [Type: string, NotBlank: ~] }
+        content:  { type: string, validation: [Type: string] }
+        isActive: { type: boolean, validation: [Type: boolean] }

@@ -1,0 +1,21 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block field_row %}
+{% spaceless %}
+    <div class="control-group">
+        {{ form_label(form, label|default(null)) }}
+        <div class="controls">
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock field_row %}
+
+
+{% block generic_label %}
+{% spaceless %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' control-label'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock %}

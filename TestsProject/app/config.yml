@@ -1,0 +1,26 @@
+framework:
+    secret:     secret
+    router:     { resource: "%kernel.root_dir%/routing.yml" }
+    test:       ~
+    form:       ~
+    validation: { enable_annotations: true }
+    templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
+    session:
+        storage_id: session.storage.filesystem
+
+mandango:
+    logging:            %kernel.debug%
+    default_connection: default
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            database: pablodip_admin_module_bundle
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        path:     %kernel.cache_dir%/database.sqlite
+        charset:  UTF8
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true

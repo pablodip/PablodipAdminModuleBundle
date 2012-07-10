@@ -1,0 +1,128 @@
+body {
+    padding-top: 40px;
+}
+
+.admin-alert {
+    margin: 10px 0 18px;
+}
+
+.admin-display-none {
+    display: none;
+}
+
+.admin-clear {
+    clear: both;
+}
+
+h1 {
+    margin: 8px 0 15px;
+}
+
+/*
+ * List
+ */
+.admin-list-reset {
+    float: right;
+}
+
+.admin-list-simple-advanced-search-switch {
+    margin-bottom: 18px;
+}
+
+.admin-list-simple-search,
+.admin-list-advanced-search-switch {
+    display: inline-block;
+}
+
+.admin-list-simple-search {
+    margin-right: 6px;
+}
+
+.admin-list-simple-search form {
+    margin-bottom: 0;
+}
+
+.admin-list-nb-results-and-actions {
+}
+
+.admin-list-nb-results-and-actions .admin-list-nb-results {
+    float: left;
+    font-weight: bold;
+}
+
+.admin-list-nb-results-and-actions .admin-list-actions {
+    float: right;
+}
+
+.admin-list-table {
+    margin: 7px 0 10px;
+}
+
+.admin-list-table th {
+    background: #ffc;
+}
+
+.admin-list-table th,
+.admin-list-table td {
+    padding: 5px 6px;
+}
+
+.admin-list-table .admin-list-align-left {
+    text-align: left;
+}
+
+.admin-list-table .admin-list-align-center {
+    text-align: center;
+}
+
+.admin-list-table .admin-list-align-right {
+    text-align: right;
+}
+
+.admin-list-th-checkbox {
+    width: 1px;
+}
+
+.admin-list-th-actions {
+    margin: .8em 0;
+}
+
+.admin-list-td-actions {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.admin-list-bath-max-per-page {
+}
+
+.admin-list-bath-max-per-page .admin-list-batch {
+    float: left;
+}
+
+.admin-list-batch form {
+    display: inline;
+}
+
+.admin-list-batch form label {
+    float: none;
+    width: auto;
+}
+
+.admin-list-batch form input,
+.admin-list-batch form select {
+    margin-right: 3px;
+}
+
+.admin-list-max-per-page {
+    float: right;
+}
+
+.admin-list-max-per-page label {
+    float: none;
+}
+
+.admin-list-pagination .pagination {
+    margin-top: 0;
+    text-align: center;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="UTF-8" />
+    	<title>{% block title %}PablodipAdminModuleBundle{% endblock %}</title>
+        {% stylesheets
+            '@PablodipAdminModuleBundle/Resources/public/vendor/*/css/*.css'
+            '@PablodipAdminModuleBundle/Resources/public/css/*.css'
+        %}
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        {% block stylesheet_extra %}{% endblock %}
+    </head>
+    <body>
+        <script>var inline = []</script>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    {% block navbar %}
+                        <a href="#" class="brand">PablodipAdminModuleBundle</a>
+                        <ul class="nav pills">
+                            <li class="active"><a href="#">Regular link</a></li>
+                            <li class="dropdown" id="menu1">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
+                                    Dropdown
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+		<div class="container-fluid">
+		    {% for alert in ['warning', 'error', 'success', 'info'] %}
+                {% if app.session.hasFlash(alert) %}
+                    <div class="alert alert-{{ alert }} admin-alert">
+                        {{ app.session.flash(alert) }}
+                    </div>
+                    {{ app.session.removeFlash(alert) }}
+                {% endif %}
+            {% endfor %}
+
+		    <div id="content">
+            	{% block content %}{% endblock %}
+            </div>
+		</div>
+        {% javascripts
+            '@PablodipAdminModuleBundle/Resources/public/vendor/*/js/*.js'
+            '@PablodipAdminModuleBundle/Resources/public/js/*.js'
+        %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        {% block javascript_extra %}{% endblock %}
+        {% include 'PablodipAdminModuleBundle::javascript_inline.html.twig' %}
+    </body>
+</html>

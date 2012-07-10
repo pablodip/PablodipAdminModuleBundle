@@ -1,0 +1,3 @@
+pablodip_admin_module_test:
+    resource: "@PablodipAdminModuleTestBundle/Module"
+    type:     module

@@ -1,0 +1,183 @@
+{% extends 'PablodipAdminModuleBundle::layout.html.twig' %}
+
+{% block title %}{{ module.actionOption('list', 'heading') }}{% endblock %}
+
+{% block content %}
+    {% set list_fields = module.actionOption('list', 'list_fields') %}
+    {% set model_actions = module.actionOption('list', 'model_actions') %}
+
+    <h1>{{ module.actionOption('list', 'heading') }}</h1>
+
+    <div class="admin-list-simple-advanced-search-switch">
+        <div class="admin-list-reset">
+            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn small">Reset</a>
+        </div>
+        {% if simple_search_enabled %}
+            <div class="admin-list-simple-search">
+                <form action="{{ module.path('list') }}" method="GET" class="form-inline">
+                    <input type="text" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
+                    {% for parameter in module.parametersToPropagate %}
+                        {% if app.request.query.has(parameter) %}
+                            <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
+                        {% endif %}
+                    {% endfor %}
+                    <input type="submit" value="Search" class="btn small" />
+                </form>
+            </div>
+        {% endif %}
+        {% if advanced_search_enabled %}
+            <div class="admin-list-advanced-search-switch">
+                <a href="#" id="admin-list-advanced-search-switch">
+                    <i class="icon-zoom-in"></i> Advanced Search
+                </a>
+            </div>
+        {% endif %}
+        <div class="admin-clear"></div>
+    </div>
+
+    {% if advanced_search_enabled %}
+        {% form_theme advanced_search_form 'PablodipAdminModuleBundle::advanced_search_form_layout.html.twig' %}
+
+        <div id="admin-list-advanced-search" class="admin-list-advanced-search admin-display-none">
+            <form  action="{{ module.path('list') }}" method="GET" class="form-horizontal">
+                <fieldset>
+                    <legend style="margin-bottom: 0;">Advanced Search</legend>
+                    {{ form_errors(advanced_search_form) }}
+                    {% for child in advanced_search_form %}
+                        {% set hidden = false %}
+                        {% for type in child.get('types') %}
+                            {% if type == 'hidden' %}
+                                {% set hidden = true %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if not hidden %}
+                            <div class="control-group">
+                                {{ form_label(child) }}
+                                <div class="controls form-inline">
+                                    {{ form_errors(child) }}
+                                    {% for grand_child in child %}
+                                        {{ form_label(grand_child) }}
+                                        {{ form_widget(grand_child) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {{ form_rest(advanced_search_form) }}
+                    {% for parameter in module.parametersToPropagate %}
+                        {% if app.request.query.has(parameter) %}
+                            <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-actions">
+                        <input type="submit" value="Search" class="btn small" />
+                        or
+                        <a href="#" id="admin-list-advanced-search-cancel" class="admin-cancel">Cancel</a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    {% endif %}
+
+    <div class="admin-list-nb-results-and-actions">
+        <div class="admin-list-nb-results">
+            {{ pagerfanta.nbResults }} results
+        </div>
+        <div class="admin-list-actions">
+            {% for list_action in module.actionOption('list', 'list_actions') %}
+                {% include list_action with {'module': module} %}
+            {% endfor %}
+        </div>
+        <div class="admin-clear"></div>
+    </div>
+
+    <table class="table table-bordered admin-list-table">
+        <thead>
+            <tr>
+                <th class="admin-list-th-checkbox"><input type="checkbox" /></th>
+                {% for field in list_fields %}
+                    <th
+                        {{- (field.hasOption('align') ? ' class="admin-list-align-'~field.getOption('align')~'"' : '') | raw -}}
+                        {{- (field.hasOption('width') ? ' style="width: '~field.getOption('width')~';"' : '') | raw -}}
+                    >
+                        {% if field.hasOption('sortable') and field.getOption('sortable') %}
+                            {% if sort == field.name %}
+                                <a href="{{ module.path('list', { 'sort': field.name, 'order': 'asc' == order ? 'desc' : 'asc' }) }}">
+                                    {{ field.label }} <i class="icon-arrow-{{ 'asc' == order ? 'up' : 'down' }}"></i>
+                                </a>
+                            {% else %}
+                                <a href="{{ module.path('list', { 'sort': field.name }) }}" class="sorting">{{ field.label }}</a>
+                            {% endif %}
+                        {% else %}
+                            <span>{{ field.label }}</span>
+                        {% endif %}
+                    </th>
+                {% endfor %}
+                <th class="admin-list-th-actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for model in pagerfanta %}
+                <tr>
+                    <td class="admin-list-td-checkbox"><input type="checkbox" value="{{ model.id }}" /></td>
+                    {% for field in list_fields %}
+                        <td
+                            {{- (field.hasOption('align') ? ' class="admin-list-align-'~field.getOption('align')~'"' : '') | raw -}}
+                        >
+                            {% include field.option('template') with {'model': model, 'field': field} %}
+                        </td>
+                    {% endfor %}
+                    <td class="admin-list-td-actions">
+                        {% for model_action in model_actions %}
+                            {% include model_action with {'module': module, 'model': model} %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="admin-list-bath-max-per-page">
+        <div class="admin-list-batch">
+            <form id="admin-batch-form" action="{{ module.path('batch') }}" method="POST" class="form-inline">
+                <input type="hidden" name="ids" value="" />
+                <label for="admin-list-batch-all">All</label>
+                <input type="checkbox" id="admin-list-batch-all" name="all" />
+                <select name="batch_action" class="span2">
+                    <option value="">Select an action</option>
+                    {% for batch_action_name, batch_action in module.actionOption('batch', 'batch_actions') %}
+                        <option value="{{ batch_action_name }}">{{ batch_action.label }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Ok" class="btn small" />
+            </form>
+        </div>
+        <div class="admin-list-max-per-page">
+            <form action="{{ module.path('list') }}" class="form-inline">
+                <label for="admin-list-max-per-page-select">Per page</label>
+                <select id="admin-list-max-per-page-select" class="span1">
+                    {% for per_page in module.actionOption('list', 'maxs_per_page') %}
+                        <option value="{{ per_page }}"
+                            {{- per_page == pagerfanta.maxPerPage ? ' selected="selected"' : '' -}}
+                        >{{ per_page }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        <div class="admin-clear"></div>
+    </div>
+
+    <div class="admin-list-pagination">
+        {{ pagerfanta(pagerfanta, 'twitter_bootstrap') }}
+    </div>
+
+    <script>
+        inline.push(function () {
+            var maxPerPageUrl = '{{ module.path('list', {'max_per_page': 'MAX_PER_PAGE'})|raw }}';
+
+            $('#admin-list-max-per-page-select').change(function () {
+                window.location = maxPerPageUrl.replace('MAX_PER_PAGE', $(this).val());
+            });
+        });
+    </script>
+{% endblock %}
