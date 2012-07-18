@@ -30,8 +30,9 @@ class UpdateAction extends BaseRouteAction
             ->setRoute('update', '/{id}', 'PUT')
             ->setController(array($this, 'controller'))
             ->addOptions(array(
-                'success_text'      => 'The element has been saved',
-                'error_text'        => 'There were problems with your submission',
+                'redirection_url' => null,
+                'success_text'    => 'The element has been saved',
+                'error_text'      => 'There were problems with your submission',
             ))
         ;
     }
@@ -54,7 +55,7 @@ class UpdateAction extends BaseRouteAction
 
             $this->get('session')->setFlash('success', $this->getOption('success_text'));
 
-            return $this->redirect($this->generateModuleUrl('list'));
+            return $this->redirect($this->getRedirectionUrl());
         }
 
         $this->get('session')->setFlash('error', $this->getOption('error_text'));
@@ -63,5 +64,14 @@ class UpdateAction extends BaseRouteAction
             'model' => $model,
             'form'  => $form->createView(),
         ));
+    }
+
+    private function getRedirectionUrl()
+    {
+        if ($this->getOption('redirection_url') === null) {
+            return $this->generateModuleUrl('list');
+        }
+
+        return $this->getOption('redirection_url');
     }
 }

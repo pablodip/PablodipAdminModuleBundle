@@ -29,6 +29,9 @@ class DeleteAction extends BaseRouteAction
         $this
             ->setRoute('delete', '/{id}', 'DELETE')
             ->setController(array($this, 'controller'))
+            ->addOptions(array(
+                'redirection_url' => null,
+            ))
         ;
 
         $this->getModule()->getAction('list')->getOption('model_actions')->add(array(
@@ -48,6 +51,15 @@ class DeleteAction extends BaseRouteAction
 
         $this->getMolino()->delete($model);
 
-        return $this->redirect($this->generateModuleUrl('list'));
+        return $this->redirect($this->getRedirectionUrl());
+    }
+
+    private function getRedirectionUrl()
+    {
+        if ($this->getOption('redirection_url') === null) {
+            return $this->generateModuleUrl('list');
+        }
+
+        return $this->getOption('redirection_url');
     }
 }

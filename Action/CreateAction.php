@@ -30,8 +30,9 @@ class CreateAction extends BaseRouteAction
             ->setRoute('create', '/', 'POST')
             ->setController(array($this, 'controller'))
             ->addOptions(array(
-                'success_text'      => 'The element has been saved',
-                'error_text'        => 'There were problems with your submission',
+                'redirection_url' => null,
+                'success_text'    => 'The element has been saved',
+                'error_text'      => 'There were problems with your submission',
             ))
         ;
     }
@@ -50,11 +51,20 @@ class CreateAction extends BaseRouteAction
 
             $this->get('session')->setFlash('success', $this->getOption('success_text'));
 
-            return $this->redirect($this->generateModuleUrl('list'));
+            return $this->redirect($this->getRedirectionUrl());
         }
 
         $this->get('session')->setFlash('error', $this->getOption('error_text'));
 
         return $this->render($newAction->getOption('template'), array('form' => $form->createView()));
+    }
+
+    private function getRedirectionUrl()
+    {
+        if ($this->getOption('redirection_url') === null) {
+            return $this->generateModuleUrl('list');
+        }
+
+        return $this->getOption('redirection_url');
     }
 }
