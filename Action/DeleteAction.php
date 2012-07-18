@@ -56,10 +56,12 @@ class DeleteAction extends BaseRouteAction
 
     private function getRedirectionUrl()
     {
-        if ($this->getOption('redirection_url') === null) {
+        $redirectionUrl = $this->getOption('redirection_url');
+
+        if ($redirectionUrl === null) {
             return $this->generateModuleUrl('list');
         }
 
-        return $this->getOption('redirection_url');
+        return $redirectionUrl;
     }
 }

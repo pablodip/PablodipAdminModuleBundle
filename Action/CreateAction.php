@@ -51,7 +51,7 @@ class CreateAction extends BaseRouteAction
 
             $this->get('session')->setFlash('success', $this->getOption('success_text'));
 
-            return $this->redirect($this->getRedirectionUrl());
+            return $this->redirect($this->getRedirectionUrl($model));
         }
 
         $this->get('session')->setFlash('error', $this->getOption('error_text'));
@@ -59,12 +59,18 @@ class CreateAction extends BaseRouteAction
         return $this->render($newAction->getOption('template'), array('form' => $form->createView()));
     }
 
-    private function getRedirectionUrl()
+    private function getRedirectionUrl($model)
     {
-        if ($this->getOption('redirection_url') === null) {
+        $redirectionUrl = $this->getOption('redirection_url');
+
+        if ($redirectionUrl === null) {
             return $this->generateModuleUrl('list');
         }
 
-        return $this->getOption('redirection_url');
+        if (is_callable($redirectionUrl)) {
+            return call_user_func($redirectionUrl, $model);
+        }
+
+        return $redirectionUrl;
     }
 }
