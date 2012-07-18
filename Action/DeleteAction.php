@@ -62,6 +62,10 @@ class DeleteAction extends BaseRouteAction
             return $this->generateModuleUrl('list');
         }
 
+        if (is_callable($redirectionUrl)) {
+            return call_user_func($redirectionUrl);
+        }
+
         return $redirectionUrl;
     }
 }
