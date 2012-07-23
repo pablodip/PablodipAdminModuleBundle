@@ -11,7 +11,6 @@
 
 namespace Pablodip\AdminModuleBundle\Action;
 
-use Pablodip\ModuleBundle\Action\BaseRouteAction;
 use Pablodip\AdminModuleBundle\BatchAction\DeleteBatchAction;
 
 /**
@@ -19,7 +18,7 @@ use Pablodip\AdminModuleBundle\BatchAction\DeleteBatchAction;
  *
  * @author Pablo Díez <pablodip@gmail.com>
  */
-class DeleteAction extends BaseRouteAction
+class DeleteAction extends RouteAction
 {
     /**
      * {@inheritdoc}

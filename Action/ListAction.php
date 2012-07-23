@@ -11,7 +11,6 @@
 
 namespace Pablodip\AdminModuleBundle\Action;
 
-use Pablodip\ModuleBundle\Action\BaseRouteAction;
 use Pablodip\ModuleBundle\Field\FieldBag;
 use Pablodip\ModuleBundle\OptionBag;
 use Pagerfanta\Pagerfanta;
@@ -23,7 +22,7 @@ use Pablodip\AdminModuleBundle\Filter\FilterInterface;
  *
  * @author Pablo Díez <pablodip@gmail.com>
  */
-class ListAction extends BaseRouteAction
+class ListAction extends RouteAction
 {
     /**
      * {@inheritdoc}

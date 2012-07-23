@@ -11,7 +11,6 @@
 
 namespace Pablodip\AdminModuleBundle\Action;
 
-use Pablodip\ModuleBundle\Action\BaseRouteAction;
 use Pablodip\ModuleBundle\Field\FieldBag;
 
 /**
@@ -19,7 +18,7 @@ use Pablodip\ModuleBundle\Field\FieldBag;
  *
  * @author Pablo Díez <pablodip@gmail.com>
  */
-class UpdateAction extends BaseRouteAction
+class UpdateAction extends RouteAction
 {
     /**
      * {@inheritdoc}
