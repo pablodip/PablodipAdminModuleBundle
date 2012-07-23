@@ -20,4 +20,12 @@ use Pablodip\ModuleBundle\Action\BaseRouteAction;
  */
 abstract class RouteAction extends BaseRouteAction
 {
+    protected function callOptionCallback($optionName, array $arguments = array())
+    {
+        $callback = $this->getOption($optionName);
+
+        if ($callback !== null) {
+            return call_suer_func_array($callback, $arguments);
+        }
+    }
 }

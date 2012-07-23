@@ -29,7 +29,9 @@ class DeleteAction extends RouteAction
             ->setRoute('delete', '/{id}', 'DELETE')
             ->setController(array($this, 'controller'))
             ->addOptions(array(
-                'redirection_url' => null,
+                'pre_delete_callback'  => null,
+                'post_delete_callback' => null,
+                'redirection_url'      => null,
             ))
         ;
 
@@ -48,7 +50,15 @@ class DeleteAction extends RouteAction
             throw $this->createNotFoundException();
         }
 
+        if ($response = $this->callOptionCallback('pre_delete_callback')) {
+            return $response;
+        }
+
         $this->getMolino()->delete($model);
+
+        if ($response = $this->callOptionCallback('post_delete_callback')) {
+            return $response;
+        }
 
         return $this->redirect($this->getRedirectionUrl());
     }

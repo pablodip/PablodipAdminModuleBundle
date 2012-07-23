@@ -29,9 +29,11 @@ class UpdateAction extends RouteAction
             ->setRoute('update', '/{id}', 'PUT')
             ->setController(array($this, 'controller'))
             ->addOptions(array(
-                'redirection_url' => null,
-                'success_text'    => 'The element has been saved',
-                'error_text'      => 'There were problems with your submission',
+                'pre_save_callback'  => null,
+                'post_save_callback' => null,
+                'redirection_url'    => null,
+                'success_text'       => 'The element has been saved',
+                'error_text'         => 'There were problems with your submission',
             ))
         ;
     }
@@ -50,7 +52,15 @@ class UpdateAction extends RouteAction
 
         $form->bindRequest($this->get('request'));
         if ($form->isValid()) {
+            if ($response = $this->callOptionCallback('pre_save_callback')) {
+                return $response;
+            }
+
             $this->getMolino()->save($model);
+
+            if ($response = $this->callOptionCallback('post_save_callback')) {
+                return $response;
+            }
 
             $this->get('session')->setFlash('success', $this->getOption('success_text'));
 
