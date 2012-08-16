@@ -46,6 +46,9 @@ class NewAction extends RouteAction
         $fields = $this->getModule()->getExtension('model')->filterFields($this->getOption('fields'));
         $form = $this->getModule()->createModelForm($model, $fields);
 
-        return $this->render($this->getOption('template'), array('form' => $form->createView()));
+        return $this->render($this->getOption('template'), array(
+            'model' => $model,
+            'form'  => $form->createView(),
+        ));
     }
 }

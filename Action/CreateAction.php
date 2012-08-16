@@ -65,7 +65,10 @@ class CreateAction extends RouteAction
 
         $this->get('session')->setFlash('error', $this->getOption('error_text'));
 
-        return $this->render($newAction->getOption('template'), array('form' => $form->createView()));
+        return $this->render($newAction->getOption('template'), array(
+            'model' => $model,
+            'form'  => $form->createView(),
+        ));
     }
 
     private function getRedirectionUrl($model)
