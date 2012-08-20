@@ -37,12 +37,22 @@ abstract class BaseThemeExtension extends BaseExtension
 
         $listAction = $module->getAction('list');
         $listAction->setOption('template', $this->getListActionTemplate());
-        $module->getAction('list')->getOption('list_actions')->set('new', $this->getNewListActionTemplate());
-        $module->getAction('list')->getOption('model_actions')->set('edit', $this->getEditModelActionTemplate());
-        $module->getAction('list')->getOption('model_actions')->set('delete', $this->getDeleteModelActionTemplate());
+        if ($module->hasAction('new')) {
+            $module->getAction('list')->getOption('list_actions')->set('new', $this->getNewListActionTemplate());
+        }
+        if ($module->hasAction('edit')) {
+            $module->getAction('list')->getOption('model_actions')->set('edit', $this->getEditModelActionTemplate());
+        }
+        if ($module->hasAction('delete')) {
+            $module->getAction('list')->getOption('model_actions')->set('delete', $this->getDeleteModelActionTemplate());
+        }
 
-        $module->getAction('new')->setOption('template', $this->getNewActionTemplate());
-        $module->getAction('edit')->setOption('template', $this->getEditActionTemplate());
+        if ($module->hasAction('new')) {
+            $module->getAction('new')->setOption('template', $this->getNewActionTemplate());
+        }
+        if ($module->hasAction('edit')) {
+            $module->getAction('edit')->setOption('template', $this->getEditActionTemplate());
+        }
     }
 
     abstract protected function getListActionTemplate();
