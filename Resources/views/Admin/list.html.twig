@@ -45,7 +45,7 @@
                     {{ form_errors(advanced_search_form) }}
                     {% for child in advanced_search_form %}
                         {% set hidden = false %}
-                        {% for type in child.get('types') %}
+                        {% for type in child.vars.block_prefixes %}
                             {% if type == 'hidden' %}
                                 {% set hidden = true %}
                             {% endif %}
