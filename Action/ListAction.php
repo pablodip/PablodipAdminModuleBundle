@@ -163,6 +163,8 @@ class ListAction extends RouteAction
             $filters = $this->getAdvancedSearchFilters($fields);
             foreach ($filters as $fieldName => $filter) {
                 $filterFormBuilder = $this->get('form.factory')->createNamedBuilder('form', $fieldName);
+                $fieldData = $fields->get($fieldName);
+                $filterFormBuilder = $this->get('form.factory')->createNamedBuilder($fieldName, 'form', null, array('label' => $fieldData->getLabel()));
                 $filter->buildForm($filterFormBuilder);
                 $formBuilder->add($filterFormBuilder);
             }
