@@ -25,7 +25,7 @@ abstract class RouteAction extends BaseRouteAction
         $callback = $this->getOption($optionName);
 
         if ($callback !== null) {
-            return call_suer_func_array($callback, $arguments);
+            return call_user_func_array($callback, $arguments);
         }
     }
 }
