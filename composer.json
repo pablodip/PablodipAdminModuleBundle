@@ -22,6 +22,7 @@
         "symfony/framework-bundle": "~2.2",
         "pablodip/module-bundle": "2.2.x-dev"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-0": { "Pablodip\\AdminModuleBundle": "" }
     },
