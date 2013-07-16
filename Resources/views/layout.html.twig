@@ -39,15 +39,13 @@
             </div>
         </div>
 		<div class="container-fluid">
-		    {% for alert in ['warning', 'error', 'success', 'info'] %}
-                {% if app.session.hasFlash(alert) %}
-                    <div class="alert alert-{{ alert }} admin-alert">
-                        {{ app.session.flash(alert) }}
-                    </div>
-                    {{ app.session.removeFlash(alert) }}
-                {% endif %}
+        {% for alert in ['warning', 'error', 'success', 'info'] %}
+            {% for flash in app.session.flashbag.get(alert) %}
+                <div class="alert alert-{{ alert }} admin-alert">
+                    {{ flash }}
+                </div>
             {% endfor %}
-
+        {% endfor %}
 		    <div id="content">
             	{% block content %}{% endblock %}
             </div>
