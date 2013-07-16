@@ -1,6 +1,8 @@
 # PablodipAdminModuleBundle
 
-[![Build Status](https://secure.travis-ci.org/pablodip/PablodipAdminModuleBundle.png)](http://travis-ci.org/pablodip/PablodipAdminModuleBundle)
+This is the White October fork of https://github.com/pablodip/PablodipAdminModuleBundle
+
+The master branch tracks the Symfony2 master branch.
 
 ## Author
 
