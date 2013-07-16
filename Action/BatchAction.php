@@ -44,7 +44,7 @@ class BatchAction extends BaseRouteAction
 
         // the user has not selected any batch
         if (!$actionName) {
-            $this->get('session')->setFlash('warning', 'You have to select an action.');
+            $this->get('session')->getFlashBag()->add('warning', 'You have to select an action.');
 
             return $this->redirect($this->generateModuleUrl('list'));
         }
@@ -65,7 +65,7 @@ class BatchAction extends BaseRouteAction
             $ids = $request->request->get('ids');
             // there are no elements selected
             if (!$ids) {
-                $this->get('session')->setFlash('warning', 'You have to select some elements.');
+                $this->get('session')->getFlashBag()->add('warning', 'You have to select some elements.');
 
                 return $this->redirect($this->generateModuleUrl('list'));
             }
@@ -73,7 +73,7 @@ class BatchAction extends BaseRouteAction
             $ids = explode(',', $ids);
             $action->processIds($ids);
 
-            $this->get('session')->setFlash('success', 'The elements were processed successfully.');
+            $this->get('session')->getFlashBag()->add('success', 'The elements were processed successfully.');
         }
 
         return $this->redirect($this->generateModuleUrl('list'));

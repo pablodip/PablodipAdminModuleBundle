@@ -58,12 +58,12 @@ class CreateAction extends RouteAction
                 return $response;
             }
 
-            $this->get('session')->setFlash('success', $this->getOption('success_text'));
+            $this->get('session')->getFlashBag()->add('success', $this->getOption('success_text'));
 
             return $this->redirect($this->getRedirectionUrl($model));
         }
 
-        $this->get('session')->setFlash('error', $this->getOption('error_text'));
+        $this->get('session')->getFlashBag()->add('error', $this->getOption('error_text'));
 
         return $this->render($newAction->getOption('template'), array(
             'model' => $model,
