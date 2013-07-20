@@ -11,6 +11,7 @@
 
 namespace Pablodip\AdminModuleBundle\Module;
 
+use Pablodip\AdminModuleBundle\Field\Guesser\DefaultOptionGuesser;
 use Pablodip\ModuleBundle\Module\Module;
 use Pablodip\ModuleBundle\Extension\Model\ModelExtension;
 use Pablodip\ModuleBundle\Field\FieldBag;
@@ -52,6 +53,7 @@ abstract class AdminModule extends Module
     protected function defineConfiguration()
     {
         $this->getOption('model_field_guessers')->add(array(
+            new DefaultOptionGuesser(),
             new IdFieldGuesser(),
             new ValidatorFieldGuesser($this->getContainer()->get('validator')->getMetadataFactory()),
         ));
