@@ -46,7 +46,7 @@ class CreateAction extends RouteAction
         $fields = $this->getModule()->getExtension('model')->filterFields($newAction->getOption('fields'));
         $form = $this->getModule()->createModelForm($model, $fields);
 
-        $form->bind($this->get('request'));
+        $form->handleRequest($this->get('request'));
         if ($form->isValid()) {
             if ($response = $this->callOptionCallback('pre_save_callback')) {
                 return $response;
