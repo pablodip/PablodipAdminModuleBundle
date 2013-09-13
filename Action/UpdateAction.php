@@ -48,7 +48,7 @@ class UpdateAction extends RouteAction
         $editAction = $this->getModule()->getAction('edit');
 
         $fields = $this->getModule()->getExtension('model')->filterFields($editAction->getOption('fields'));
-        $form = $this->getModule()->createModelForm($model, $fields);
+        $form = $this->getModule()->createModelForm($model, $fields, array('method' => 'PUT'));
 
         $form->bind($this->get('request'));
         if ($form->isValid()) {
