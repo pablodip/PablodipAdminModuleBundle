@@ -96,11 +96,19 @@ abstract class AdminModule extends Module
         return $this->adminSession;
     }
 
-    public function createModelForm($model, FieldBag $fields)
+    /**
+     * Default method is POST, override if required
+     *
+     * @param $model
+     * @param FieldBag $fields
+     * @param array $options
+     * @return mixed
+     */
+    public function createModelForm($model, FieldBag $fields, array $options = array('method' => 'POST'))
     {
         $formBuilder = $this->getContainer()
             ->get('form.factory')
-            ->createBuilder('form', $model)
+            ->createBuilder('form', $model, $options)
         ;
 
         foreach ($fields as $field) {
