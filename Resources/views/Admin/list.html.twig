@@ -8,6 +8,8 @@
 
     <h1>{{ module.actionOption('list', 'heading') }}</h1>
 
+    {% block introductory_text %}{% endblock %}
+
     <div class="admin-list-simple-advanced-search-switch">
         <div class="admin-list-reset">
             <a href="{{ module.path('list', { 'reset': true }) }}" class="btn small">Reset</a>
