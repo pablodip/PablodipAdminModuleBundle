@@ -222,6 +222,9 @@ class ListAction extends RouteAction
         if ('boolean' === $type) {
             return new \Pablodip\AdminModuleBundle\Filter\BooleanFilter($this->get('translator'));
         }
+        if ('integer' === $type) {
+            return new \Pablodip\AdminModuleBundle\Filter\IntegerFilter($this->get('translator'));
+        }
 
         throw new \RuntimeException(sprintf('The advanced filter type "%s" cannot be transformed.', $type));
     }
