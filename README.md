@@ -397,30 +397,6 @@ Your code which adds the custom list action will therefore need to explicitly re
         ));
     }
 
-### The option "template" does not exist
-
-__Update 2013-07-20__ This should now no longer be shown.  There is a new field type "guesser" which adds a plain text display template (at low confidence) before anything else, so the bundle will use this initially.
-
-__An exception has been thrown during the rendering of a template ("The option "template" does not exist.") in PablodipAdminModuleBundle::layout.html.twig at line 53.__
-
-Suggests that the renderer can't work out which template to use for a particular field.
-
-The simplest way to solve this is to specify a template for your field.  Look at this __wrong code__ in the module:
-
-     $modelFields->add(array(
-         'emailAddress' => array('label' => 'Email address'),
-         'createdAt' => array('label' => 'Created at', 'date_format' => 'd M Y, g.ia', 'template' => 'PablodipAdminModuleBundle::fields/date.html.twig'),
-     ));
-
-The second field has a template explicitly specified.  You'll need to explicitly set a template for whichever field(s) is causing the error in your app.  Look in the vendor folders to see what your options are for field type. It should look more like this __right code__.
-
-     $modelFields->add(array(
-         'emailAddress' => array('label' => 'Email address', 'template'=>'PablodipAdminModuleBundle::fields/text.html.twig'),
-         'createdAt' => array('label' => 'Created at', 'date_format' => 'd M Y, g.ia', 'template' => 'PablodipAdminModuleBundle::fields/date.html.twig'),
-     ));
-
-You don't need to use explicitely the template key if you use the validation type in the model (it can be guessed if you've done this).
-
 ## See also
 
 The Admin bundle builds on top of Molino and Pablo's generic ModuleBundle.  These are documented:
