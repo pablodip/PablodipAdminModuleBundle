@@ -110,7 +110,7 @@ The code below shows a simple sample module, with comments explaining what each 
             $updateAction->setOption('success_text', 'Changes saved');
             $updateAction->setOption('error_text', 'There were problems saving your changes');
 
-            // Event configuration
+            // Sample event configuration.  This is optional.  Only add it if you need it.
             $updateAction->setOption("event_name", "myproj.entity.user.updated");
             $updateAction->setOption("event_class", "MyProj\\CoreBundle\\Event\\UserUpdatedEvent");
             $updateAction->setOption("event_method", "setUser");
@@ -129,13 +129,15 @@ The name can be anything you like, and the resource entry should point to the bu
 
 You now browse to the appropriate routes for your module's actions!  (See `setRoutePatternPrefix` above.)
 
-# What else might I see?
+## What else might I see?
 
 If you're looking at the implementation of the AdminBundle in an existing project, you might see lots of directories in the bundle.  The only Admin-specific stuff is Action, Filter and Module, everything else is standard Symfony2 stuff.
 
 * Action - only need if have custom actions (see the comment in the code about "sample actions" for details of the default ones).
 * Filter - by default, lists in the admin bundle include basic filtering.  You can create more advanced filters yourself.
 * Module - your modules as described above.
+
+Note, however, that these names are a convention only - you can call your directories anything!
 
 _Next: [Advanced Usage](advanced-usage.md)_
 

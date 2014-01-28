@@ -21,10 +21,10 @@ Say that you have an admin module for a Region, and each of those Region has one
 
 The only difference is that you'll have some sort of references entry for the child object, relating it back to its parent.
 
-In Doctrine, for example, you might have this:
+In Doctrine, for example, you might have this in your `Country` class definition:
 
     /**
-     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\ManyToOne(targetEntity="Region", mappedBy="countries")
      * @var integer
      */
     protected $region;
@@ -42,7 +42,7 @@ This sort of thing isn't AdminBundle-specific, but the later steps are.
 
 ### Step 2: Set up MolinoNestedExtension
 
-Add some code like the following into your child module's class:
+Add some code similar to the following into your child module's class:
 
     protected function registerExtensions()
     {
@@ -63,7 +63,7 @@ If you look in the MolinoNestedExtension code, you can see that it does various 
 
 1. Before the child controller executes, the extension looks up the parent in the database and makes the parent available as an attribute on the request (see `addCheckParentControllerPreExecute`).  NB You can't retrieve this value in the Module's `configure` function - it won't be available at that point.
 2. When queries are run for the child object, [Molino events](https://github.com/whiteoctober/molino#events) are used to add a criteria ensuring that the parent is matched too (`addCreateQueryEvent`).
-3. Similarly, when the child object is saved, the parent reference is automatically set (`addCreateModelEvent`).
+3. Similarly, when the child object is saved, the parent reference is automatically set (see `addCreateModelEvent`).  This uses the `association` property you've set up in `registerExtensions` - it calls a method called `set<Association>`, where `<Association>` is the value set for `association` with the first letter capitalised.
 
 You'll also need to add some Molino config into your module.  Something like this:
 
@@ -97,7 +97,7 @@ For creating new objects, you could add the following link to the parent's templ
 
 The `trans` tags are only required if your application does localisation (which it probably should!)
 
-For listing and edited them, you could created a separate controller method which rendered a template within the parent template:
+For listing and edited them, you could create a separate controller method which renders a template within the parent template:
 
     {% render "MyProjAdminBundle:Default:countryList" with {'region_id': model.id} %}
 
@@ -131,7 +131,11 @@ You have three options:
 
 ## Filters (advanced search)
 
-Want to offer a standard filter interface to your admin users? Easy peasy.  First make sure any fields that you want to filter on have been added in your admin module in the normal way via the `model_fields` option. Now, there are two approaches...
+Want to offer a standard filter interface to your admin users? Easy peasy.  First make sure any fields that you want to filter on have been added in your admin module in the normal way via the `model_fields` option, then follow the instructions in this section:
+
+### Choose or create a filter class, and configure your fields
+
+There are two approaches...
 
 If you want to filter via a normal string `LIKE '%foo%'`-style approach, or a boolean field, add the following into your field definition:
 
@@ -149,20 +153,11 @@ depending on your requirements.  This will give you a standard set of widgets ac
 
 Alternatively, if you want to add some kind of custom filter (eg a date filter, a dropdown populated by your own special items and so on), you'll need to create a custom filter class, which extends from `Pablodip\AdminModuleBundle\Filter\BaseFilter`.  This has 3 methods that will need to be implemented - see the base filters for an example.  Essentially you're just creating a form, and then applying any values submitted to a supplied Molino Query object to perform the filtering.
 
-Once you've configured your fields, the final step is to tell your `ListAction` that you want to add fields to the search filter.  This is done via the action's `advanced_search_fields` option (shown here being configured within a module):
+You then use the custom filter by using the `advanced_search_filter` property in your field definition:
 
-    $listAction = $this->getAction('list');
-    $modelFields = $this->getOption('model_fields');
-    $listAction->getOption('advanced_search_fields')->add(array(
-        ...,
-        'yourFieldName' => $modelFields->get('yourFieldName'),
-        'anotherField' => $modelFields->get('anotherField'),
-        ...,
-    ));
+    'advanced_search_filter' => new Filter\MySpecialCustomFilter($this->getContainer()->get('translator')), // BaseFilter's constructor requires a TranslatorInterface to be passed in
 
-You'll be able to filter now from the list page in your module.
-
-### GOTCHA: "is not" and null columns
+#### GOTCHA: "is not" and null columns
 
 In the course of writing your filters, you'll probably include some code like this:
 
@@ -179,47 +174,73 @@ In many cases, this will do what you want.  However, bear in mind cases like the
 2. 8 entities have this as null, 1 has this set to "Credit Card" and 1 has this set to "Debit Card"
 3. You filter "Payment method is not Credit Card"
 
-How many results should be returned?  The simple code above will return 1 result, that with a payment method of "Debit Card".  If you want nulls to match too, you'll need to write some more complicated code.  It'll look something like this:
+How many results should be returned?  The simple code above will return 1 result, that with a payment method of "Debit Card".  If you want nulls to match too, you'll need to write some more complicated code for your `filter` method.  It'll look something like this:
 
-    if ($data['type'] == 'is') {
-        $query->filterEqual('paymentMethod', $data['value']);
-    }
-    if ($data['type'] == 'is not') {
-        // Have to build a more complex queries, so that null counts as "not equal to anything"
-        // Doctrine's SelectQuery has the getQueryBuilder method (from BaseQuery), even though the QueryInterface doesn't
-        /* @var $qb QueryBuilder */
-        $qb = $query->getQueryBuilder();
+    use Doctrine\ORM\Query\Expr\Andx;
+    use Doctrine\ORM\Query\Expr\Orx;
+    use Doctrine\ORM\QueryBuilder;
+    use Molino\QueryInterface;
+    use Pablodip\AdminModuleBundle\Filter\BaseFilter;
 
-        // any existing conditions?
-        $existingWhere = $qb->getDQLPart('where');
-        if ($existingWhere) {
-            $existingWhere = $existingWhere->getParts();
+    // ...
+
+    public function filter(QueryInterface $query, $fieldName, array $data)
+    {
+        if ($data['type'] == 'is') {
+            $query->filterEqual('paymentMethod', $data['value']);
         }
+        if ($data['type'] == 'is not') {
+            // Have to build a more complex queries, so that null counts as "not equal to anything"
+            // Doctrine's SelectQuery has the getQueryBuilder method (from BaseQuery), even though the QueryInterface doesn't
+            /* @var $qb QueryBuilder */
+            $qb = $query->getQueryBuilder();
 
-        // get table aliases so can associate the column with a table
-        $aliases = $qb->getRootAliases();
-        $colNameAndIdentifier = $aliases[0] . '.paymentMethod';
+            // any existing conditions?
+            $existingWhere = $qb->getDQLPart('where');
+            if ($existingWhere) {
+                $existingWhere = $existingWhere->getParts();
+            }
 
-        // WHERE [any existing conditions] AND (paymentMethod <> ?x OR paymentMethod IS NULL)
-        $or = new Orx(
-            array(
-                $qb->expr()->neq($colNameAndIdentifier, ':paymentMethod'),
-                $qb->expr()->isNull($colNameAndIdentifier)
-            )
-        );
+            // get table aliases so can associate the column with a table
+            $aliases = $qb->getRootAliases();
+            $colNameAndIdentifier = $aliases[0] . '.paymentMethod';
 
-        if ($existingWhere) {
-            $conditions = new Andx(
-                $existingWhere
+            // WHERE [any existing conditions] AND (paymentMethod <> ?x OR paymentMethod IS NULL)
+            $or = new Orx(
+                array(
+                    $qb->expr()->neq($colNameAndIdentifier, ':paymentMethod'),
+                    $qb->expr()->isNull($colNameAndIdentifier)
+                )
             );
-            $conditions->add($or);
-        } else {
-            $conditions = $or;
-        }
-        $qb->add('where', $conditions);
 
-        $qb->setParameter('paymentMethod', $data['value']);
+            if ($existingWhere) {
+                $conditions = new Andx(
+                    $existingWhere
+                );
+                $conditions->add($or);
+            } else {
+                $conditions = $or;
+            }
+            $qb->add('where', $conditions);
+
+            $qb->setParameter('paymentMethod', $data['value']);
+        }
     }
+
+### Configure your Action
+
+Once you've configured your fields, the final step is to tell your `ListAction` that you want to add fields to the search filter.  This is done via the action's `advanced_search_fields` option (shown here being configured within a module):
+
+    $listAction = $this->getAction('list');
+    $modelFields = $this->getOption('model_fields');
+    $listAction->getOption('advanced_search_fields')->add(array(
+        ...,
+        'yourFieldName' => $modelFields->get('yourFieldName'),
+        'anotherField' => $modelFields->get('anotherField'),
+        ...,
+    ));
+
+You'll be able to filter now from the list page in your module.
 
 _Previous: [Basic Usage](basic-usage.md)_
 
