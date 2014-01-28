@@ -24,7 +24,7 @@ The only difference is that you'll have some sort of references entry for the ch
 In Doctrine, for example, you might have this in your `Country` class definition:
 
     /**
-     * @ORM\ManyToOne(targetEntity="Region", mappedBy="countries")
+     * @ORM\ManyToOne(targetEntity="Region", inversedBy="countries")
      * @var integer
      */
     protected $region;
