@@ -145,7 +145,7 @@
                 <input type="hidden" name="ids" value="" />
                 <label for="admin-list-batch-all">All</label>
                 <input type="checkbox" id="admin-list-batch-all" name="all" />
-                <select name="batch_action" class="span2">
+                <select name="batch_action">
                     <option value="">Select an action</option>
                     {% for batch_action_name, batch_action in module.actionOption('batch', 'batch_actions') %}
                         <option value="{{ batch_action_name }}">{{ batch_action.label }}</option>
@@ -157,7 +157,7 @@
         <div class="admin-list-max-per-page">
             <form action="{{ module.path('list') }}" class="form-inline">
                 <label for="admin-list-max-per-page-select">Per page</label>
-                <select id="admin-list-max-per-page-select" class="span1">
+                <select id="admin-list-max-per-page-select">
                     {% for per_page in module.actionOption('list', 'maxs_per_page') %}
                         <option value="{{ per_page }}"
                             {{- per_page == pagerfanta.maxPerPage ? ' selected="selected"' : '' -}}
