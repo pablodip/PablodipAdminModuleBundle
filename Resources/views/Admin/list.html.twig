@@ -12,7 +12,7 @@
 
     <div class="admin-list-simple-advanced-search-switch">
         <div class="admin-list-reset">
-            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn small">Reset</a>
+            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default">Reset</a>
         </div>
         {% if simple_search_enabled %}
             <div class="admin-list-simple-search">
@@ -23,7 +23,7 @@
                             <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
                         {% endif %}
                     {% endfor %}
-                    <input type="submit" value="Search" class="btn small" />
+                    <input type="submit" value="Search" class="btn btn-default" />
                 </form>
             </div>
         {% endif %}
@@ -72,7 +72,7 @@
                         {% endif %}
                     {% endfor %}
                     <div class="form-actions">
-                        <input type="submit" value="Search" class="btn small" />
+                        <input type="submit" value="Search" class="btn btn-default" />
                         or
                         <a href="#" id="admin-list-advanced-search-cancel" class="admin-cancel">Cancel</a>
                     </div>
@@ -151,7 +151,7 @@
                         <option value="{{ batch_action_name }}">{{ batch_action.label }}</option>
                     {% endfor %}
                 </select>
-                <input type="submit" value="Ok" class="btn small" />
+                <input type="submit" value="Ok" class="btn btn-default" />
             </form>
         </div>
         <div class="admin-list-max-per-page">
