@@ -1,5 +1,6 @@
 body {
-    padding-top: 40px;
+    /* Make main content clear top navbar */
+    padding-top: 70px;
 }
 
 .admin-alert {
