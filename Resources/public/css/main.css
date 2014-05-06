@@ -143,10 +143,10 @@ h1 {
 
 /*
 //
-// ***** Simple forms e.g. log-in *****
+// ***** Forms e.g. log-in, vertically aligned (e.g. input below label) *****
 //
 */
-.simple-form {
+.form-vertical {
     min-width: 200px;
     max-width: 25%;
 }
