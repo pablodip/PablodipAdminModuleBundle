@@ -140,3 +140,13 @@ h1 {
     margin-top: 20px;
     text-align: center;
 }
+
+/*
+//
+// ***** Simple forms e.g. log-in *****
+//
+*/
+.simple-form {
+    min-width: 200px;
+    max-width: 25%;
+}
