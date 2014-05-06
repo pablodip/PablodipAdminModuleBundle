@@ -4,8 +4,8 @@
 	    <meta charset="UTF-8" />
     	<title>{% block title %}PablodipAdminModuleBundle{% endblock %}</title>
         {% stylesheets
-            '@PablodipAdminModuleBundle/Resources/public/vendor/*/css/*.css'
-            '@PablodipAdminModuleBundle/Resources/public/css/*.css'
+            'bundles/pablodipadminmodule/vendor/*/css/*.css' filter='cssrewrite'
+            'bundles/pablodipadminmodule/css/*.css' filter='cssrewrite'
         %}
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
         {% endstylesheets %}
