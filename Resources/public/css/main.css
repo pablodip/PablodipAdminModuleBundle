@@ -115,6 +115,19 @@ h1 {
     margin-right: 3px;
 }
 
+.admin-list-batch select, .admin-list-max-per-page select {
+    border: 1px solid #ccc;
+    height: 30px;
+}
+
+.admin-list-batch select {
+    width: 220px;
+}
+
+.admin-list-max-per-page select {
+    width: 60px;
+}
+
 .admin-list-max-per-page {
     float: right;
 }
