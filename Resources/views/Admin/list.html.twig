@@ -64,8 +64,10 @@
                             {% endif %}
                         {% endfor %}
                         {% if not hidden %}
-                            {{ form_label(child) }}
-                            <div class="form-group">
+                            <div class="form-group search-option-title">
+                                {{ form_label(child) }}
+                            </div>
+                            <div class="form-group search-option">
                                 {{ form_errors(child) }}
                                 {% for grand_child in child %}
                                     {{ form_label(grand_child) }}

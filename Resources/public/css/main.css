@@ -174,3 +174,36 @@ h1 {
     /* Usually contains the "or" between Save and Cancel */
     margin: 0 5px;
 }
+
+/*
+//
+// ***** Togglable advanced search form *****
+//
+*/
+.admin-list-advanced-search .form-group {
+    /* Make search field rows display under the rows' titles */
+    display: block;
+    margin: 0 0 10px;
+}
+
+.admin-list-advanced-search .search-option-title label:after {
+    /* Add puntuation after title */
+    content: ':';
+}
+
+.admin-list-advanced-search .search-option {
+    /* Indent around titles */
+    margin: 0 0 15px 20px;
+    padding: 5px 0 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.admin-list-advanced-search .search-option label {
+    /* Labels in form rows, differentiate from titles */
+    font-weight: normal;
+    margin-right: 5px;
+}
+
+.admin-list-advanced-search .search-option select, .admin-list-advanced-search .search-option input {
+    margin-right: 5px;
+}
