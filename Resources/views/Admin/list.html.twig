@@ -14,9 +14,11 @@
     {% block introductory_text %}{% endblock %}
 
     <div class="admin-list-simple-advanced-search-switch">
+        {% if simple_search_enabled or advanced_search_enabled %}
         <div class="admin-list-reset">
             <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default">Reset</a>
         </div>
+        {% endif %}
         {% if simple_search_enabled %}
             <div class="admin-list-simple-search">
                 <form action="{{ module.path('list') }}" method="GET" class="form-inline">
