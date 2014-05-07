@@ -17,3 +17,23 @@
     {{ parent() }}
 {% endspaceless %}
 {% endblock %}
+
+{# Overrides form_div_layout.html.twig to add classes to all #}
+{# inut fields except checkboxes and radio buttons #}
+{% block form_widget_simple %}
+{% spaceless %}
+    {% set type = type|default('text') %}
+    <input
+        {% if type != 'checkbox' and type != 'radio' %}
+         class="form-control"
+        {% endif %}
+         type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endspaceless %}
+{% endblock form_widget_simple %}
+
+{# Same again for textareas #}
+{% block textarea_widget %}
+{% spaceless %}
+    <textarea class="form-control" {{ block('widget_attributes') }}>{{ value }}</textarea>
+{% endspaceless %}
+{% endblock textarea_widget %}
