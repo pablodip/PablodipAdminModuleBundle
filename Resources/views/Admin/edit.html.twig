@@ -5,7 +5,7 @@
 {% block content %}
     <h1>{{ module.actionOption('edit', 'heading') }}</h1>
 
-    <form action="{{ module.path('update', {'id': model.id}) }}" method="POST" class="form-horizontal">
+    <form action="{{ module.path('update', {'id': model.id}) }}" method="POST" class="form-vertical">
         <input type="hidden" name="_method" value="PUT" />
 
         <fieldset>
@@ -16,7 +16,7 @@
             <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <span class="admin-or">or</span>
-                <a href="{{ module.path('list') }}" class="admin-cancel">Cancel</a>
+                <a href="{{ module.path('list') }}" class="btn btn-default">Cancel</a>
             </div>
         </fieldset>
     </form>
