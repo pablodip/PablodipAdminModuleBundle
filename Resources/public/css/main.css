@@ -146,7 +146,7 @@ h1 {
 // ***** Forms e.g. log-in, vertically aligned (e.g. input below label) *****
 //
 */
-.form-vertical {
+.form-vertical .form-group, .form-vertical .form-actions {
     /* Limit width, since inouts are set to 100% */
     min-width: 200px;
     max-width: 25%;

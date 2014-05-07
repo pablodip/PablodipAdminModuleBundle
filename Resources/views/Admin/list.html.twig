@@ -8,6 +8,9 @@
 
     <h1>{{ module.actionOption('list', 'heading') }}</h1>
 
+    {# Legend being used as HR it seems #}
+    <legend></legend>
+
     {% block introductory_text %}{% endblock %}
 
     <div class="admin-list-simple-advanced-search-switch">
@@ -30,7 +33,7 @@
         {% if advanced_search_enabled %}
             <div class="admin-list-advanced-search-switch">
                 <a href="#" id="admin-list-advanced-search-switch">
-                    <i class="icon-zoom-in"></i> Advanced Search
+                    <i class="glyphicon glyphicon-zoom-in"></i> Advanced Search
                 </a>
             </div>
         {% endif %}
@@ -105,7 +108,7 @@
                         {% if field.hasOption('sortable') and field.getOption('sortable') %}
                             {% if sort == field.name %}
                                 <a href="{{ module.path('list', { 'sort': field.name, 'order': 'asc' == order ? 'desc' : 'asc' }) }}">
-                                    {{ field.label | trans }} <i class="icon-arrow-{{ 'asc' == order ? 'up' : 'down' }}"></i>
+                                    {{ field.label | trans }} <i class="glyphicon glyphicon-arrow-{{ 'asc' == order ? 'up' : 'down' }}"></i>
                                 </a>
                             {% else %}
                                 <a href="{{ module.path('list', { 'sort': field.name }) }}" class="sorting">{{ field.label | trans }}</a>
