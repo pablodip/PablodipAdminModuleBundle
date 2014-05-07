@@ -23,10 +23,11 @@ h1 {
  * List
  */
 .admin-list-reset {
-    float: right;
+    float: left;
 }
 
 .admin-list-simple-advanced-search-switch {
+    float: right;
     margin-bottom: 18px;
 }
 
@@ -36,7 +37,18 @@ h1 {
 }
 
 .admin-list-simple-search {
-    margin-right: 6px;
+    float: left;
+    margin-right: 4px;
+}
+
+/* These styles usually come from Bootstrap at >= 768px wide */
+/* Without them, simple search form wraps at mobile size */
+@media (max-width: 767px) {
+    .admin-list-simple-search .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+    }
 }
 
 .admin-list-simple-search form {

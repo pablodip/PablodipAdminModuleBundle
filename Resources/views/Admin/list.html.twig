@@ -14,24 +14,21 @@
     {% block introductory_text %}{% endblock %}
 
     <div class="admin-list-simple-advanced-search-switch">
-        {% if simple_search_enabled or advanced_search_enabled %}
-        <div class="admin-list-reset">
-            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default">Reset</a>
-        </div>
-        {% endif %}
+
         {% if simple_search_enabled %}
             <div class="admin-list-simple-search">
                 <form action="{{ module.path('list') }}" method="GET" class="form-inline">
-                    <input type="text" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
+                    <input type="text" class="form-control input-sm" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
                     {% for parameter in module.parametersToPropagate %}
                         {% if app.request.query.has(parameter) %}
                             <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
                         {% endif %}
                     {% endfor %}
-                    <input type="submit" value="Search" class="btn btn-default" />
+                    <input type="submit" value="Search" class="btn btn-primary btn-sm" />
                 </form>
             </div>
         {% endif %}
+
         {% if advanced_search_enabled %}
             <div class="admin-list-advanced-search-switch">
                 <a href="#" id="admin-list-advanced-search-switch">
@@ -39,8 +36,17 @@
                 </a>
             </div>
         {% endif %}
+
+        {% if simple_search_enabled or advanced_search_enabled %}
+        <div class="admin-list-reset">
+            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default btn-sm">Reset</a>
+        </div>
+        {% endif %}
+
         <div class="admin-clear"></div>
     </div>
+
+    <div class="clearfix"></div>
 
     {% if advanced_search_enabled %}
         {% form_theme advanced_search_form 'PablodipAdminModuleBundle::advanced_search_form_layout.html.twig' %}
