@@ -147,6 +147,17 @@ h1 {
 //
 */
 .form-vertical {
+    /* Limit width, since inouts are set to 100% */
     min-width: 200px;
     max-width: 25%;
+}
+
+.form-actions {
+    /* Block containing Save/Cancel buttons etc. */
+    margin-top: 25px;
+}
+
+.form-actions span {
+    /* Usually contains the "or" between Save and Cancel */
+    margin: 0 5px;
 }
