@@ -54,7 +54,7 @@
         <div id="admin-list-advanced-search" class="admin-list-advanced-search admin-display-none">
             <form  action="{{ module.path('list') }}" method="GET" class="form-horizontal">
                 <fieldset>
-                    <legend style="margin-bottom: 0;">Advanced Search</legend>
+                    <legend>Advanced Search</legend>
                     {{ form_errors(advanced_search_form) }}
                     {% for child in advanced_search_form %}
                         {% set hidden = false %}
@@ -64,15 +64,13 @@
                             {% endif %}
                         {% endfor %}
                         {% if not hidden %}
-                            <div class="control-group">
-                                {{ form_label(child) }}
-                                <div class="controls form-inline">
-                                    {{ form_errors(child) }}
-                                    {% for grand_child in child %}
-                                        {{ form_label(grand_child) }}
-                                        {{ form_widget(grand_child) }}
-                                    {% endfor %}
-                                </div>
+                            {{ form_label(child) }}
+                            <div class="form-group">
+                                {{ form_errors(child) }}
+                                {% for grand_child in child %}
+                                    {{ form_label(grand_child) }}
+                                    {{ form_widget(grand_child) }}
+                                {% endfor %}
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -83,9 +81,9 @@
                         {% endif %}
                     {% endfor %}
                     <div class="form-actions">
-                        <input type="submit" value="Search" class="btn btn-default" />
-                        or
-                        <a href="#" id="admin-list-advanced-search-cancel" class="admin-cancel">Cancel</a>
+                        <input type="submit" value="Search" class="btn btn-primary btn-sm" />
+                        <span>or</span>
+                        <a href="#" id="admin-list-advanced-search-cancel" class="btn btn-default btn-sm">Cancel</a>
                     </div>
                 </fieldset>
             </form>
