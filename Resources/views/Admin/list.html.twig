@@ -8,32 +8,43 @@
 
     <h1>{{ module.actionOption('list', 'heading') }}</h1>
 
+    {# Legend being used as HR it seems #}
+    <legend></legend>
+
+    {% block introductory_text %}{% endblock %}
+
     <div class="admin-list-simple-advanced-search-switch">
-        <div class="admin-list-reset">
-            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn small">Reset</a>
-        </div>
-        {% if simple_search_enabled %}
-            <div class="admin-list-simple-search">
-                <form action="{{ module.path('list') }}" method="GET" class="form-inline">
-                    <input type="text" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
-                    {% for parameter in module.parametersToPropagate %}
-                        {% if app.request.query.has(parameter) %}
-                            <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
-                        {% endif %}
-                    {% endfor %}
-                    <input type="submit" value="Search" class="btn small" />
-                </form>
-            </div>
-        {% endif %}
+
         {% if advanced_search_enabled %}
             <div class="admin-list-advanced-search-switch">
                 <a href="#" id="admin-list-advanced-search-switch">
-                    <i class="icon-zoom-in"></i> Advanced Search
+                    <i class="glyphicon glyphicon-zoom-in"></i> Advanced Search
                 </a>
             </div>
         {% endif %}
+
+        {% if simple_search_enabled %}
+        <div class="admin-list-simple-search">
+            <form action="{{ module.path('list') }}" method="GET" class="form-inline">
+                <input type="text" class="form-control input-sm" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
+                {% for parameter in module.parametersToPropagate %}
+                    {% if app.request.query.has(parameter) %}
+                        <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
+                    {% endif %}
+                {% endfor %}
+                <input type="submit" value="Search" class="btn btn-primary btn-sm" />
+            </form>
+        </div>
+
+        <div class="admin-list-reset">
+            <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default btn-sm">Reset</a>
+        </div>
+        {% endif %}
+
         <div class="admin-clear"></div>
     </div>
+
+    <div class="clearfix"></div>
 
     {% if advanced_search_enabled %}
         {% form_theme advanced_search_form 'PablodipAdminModuleBundle::advanced_search_form_layout.html.twig' %}
@@ -41,25 +52,25 @@
         <div id="admin-list-advanced-search" class="admin-list-advanced-search admin-display-none">
             <form  action="{{ module.path('list') }}" method="GET" class="form-horizontal">
                 <fieldset>
-                    <legend style="margin-bottom: 0;">Advanced Search</legend>
+                    <legend>Advanced Search</legend>
                     {{ form_errors(advanced_search_form) }}
                     {% for child in advanced_search_form %}
                         {% set hidden = false %}
-                        {% for type in child.get('types') %}
+                        {% for type in child.vars.block_prefixes %}
                             {% if type == 'hidden' %}
                                 {% set hidden = true %}
                             {% endif %}
                         {% endfor %}
                         {% if not hidden %}
-                            <div class="control-group">
+                            <div class="form-group search-option-title">
                                 {{ form_label(child) }}
-                                <div class="controls form-inline">
-                                    {{ form_errors(child) }}
-                                    {% for grand_child in child %}
-                                        {{ form_label(grand_child) }}
-                                        {{ form_widget(grand_child) }}
-                                    {% endfor %}
-                                </div>
+                            </div>
+                            <div class="form-group search-option">
+                                {{ form_errors(child) }}
+                                {% for grand_child in child %}
+                                    {{ form_label(grand_child) }}
+                                    {{ form_widget(grand_child) }}
+                                {% endfor %}
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -70,9 +81,11 @@
                         {% endif %}
                     {% endfor %}
                     <div class="form-actions">
-                        <input type="submit" value="Search" class="btn small" />
-                        or
-                        <a href="#" id="admin-list-advanced-search-cancel" class="admin-cancel">Cancel</a>
+                        <input type="submit" value="Search" class="btn btn-primary btn-sm" />
+                        <span>&nbsp;</span>
+                        <a href="#" id="admin-list-advanced-search-cancel" class="btn btn-default btn-sm">Cancel</a>
+                        <span>&nbsp;</span>
+                        <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default btn-sm">Reset</a>
                     </div>
                 </fieldset>
             </form>
@@ -103,7 +116,7 @@
                         {% if field.hasOption('sortable') and field.getOption('sortable') %}
                             {% if sort == field.name %}
                                 <a href="{{ module.path('list', { 'sort': field.name, 'order': 'asc' == order ? 'desc' : 'asc' }) }}">
-                                    {{ field.label | trans }} <i class="icon-arrow-{{ 'asc' == order ? 'up' : 'down' }}"></i>
+                                    {{ field.label | trans }} <i class="glyphicon glyphicon-arrow-{{ 'asc' == order ? 'up' : 'down' }}"></i>
                                 </a>
                             {% else %}
                                 <a href="{{ module.path('list', { 'sort': field.name }) }}" class="sorting">{{ field.label | trans }}</a>
@@ -143,19 +156,19 @@
                 <input type="hidden" name="ids" value="" />
                 <label for="admin-list-batch-all">All</label>
                 <input type="checkbox" id="admin-list-batch-all" name="all" />
-                <select name="batch_action" class="span2">
+                <select name="batch_action">
                     <option value="">Select an action</option>
                     {% for batch_action_name, batch_action in module.actionOption('batch', 'batch_actions') %}
                         <option value="{{ batch_action_name }}">{{ batch_action.label }}</option>
                     {% endfor %}
                 </select>
-                <input type="submit" value="Ok" class="btn small" />
+                <input type="submit" value="Ok" class="btn btn-default" />
             </form>
         </div>
         <div class="admin-list-max-per-page">
             <form action="{{ module.path('list') }}" class="form-inline">
                 <label for="admin-list-max-per-page-select">Per page</label>
-                <select id="admin-list-max-per-page-select" class="span1">
+                <select id="admin-list-max-per-page-select">
                     {% for per_page in module.actionOption('list', 'maxs_per_page') %}
                         <option value="{{ per_page }}"
                             {{- per_page == pagerfanta.maxPerPage ? ' selected="selected"' : '' -}}
@@ -168,7 +181,7 @@
     </div>
 
     <div class="admin-list-pagination">
-        {{ pagerfanta(pagerfanta, 'twitter_bootstrap') }}
+        {{ pagerfanta(pagerfanta, 'twitter_bootstrap3', { "css_container_class": "pagination" }) }}
     </div>
 
     <script>

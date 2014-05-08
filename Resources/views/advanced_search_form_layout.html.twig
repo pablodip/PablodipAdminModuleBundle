@@ -1,21 +1,54 @@
 {% extends 'form_div_layout.html.twig' %}
 
-{% block field_row %}
+{% block form_row %}
 {% spaceless %}
-    <div class="control-group">
+    <div class="form-group">
         {{ form_label(form, label|default(null)) }}
-        <div class="controls form-inline">
-            {{ form_errors(form) }}
-            {{ form_widget(form) }}
-        </div>
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
     </div>
 {% endspaceless %}
-{% endblock field_row %}
+{% endblock form_row %}
 
-
-{% block generic_label %}
+{% block form_label %}
 {% spaceless %}
-    {% set attr = attr|merge({'class': attr.class|default('') ~ ' control-label'}) %}
+    {% set label_attr = attr|merge({'class': attr.class|default('') ~ ' control-label'}) %}
     {{ parent() }}
 {% endspaceless %}
 {% endblock %}
+
+{# Overrides form_div_layout.html.twig to add classes to all #}
+{# inut fields except checkboxes and radio buttons #}
+{% block form_widget_simple %}
+{% spaceless %}
+    {% set type = type|default('text') %}
+    <input
+        {% if type != 'checkbox' and type != 'radio' %}
+         class="form-control"
+        {% endif %}
+         type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endspaceless %}
+{% endblock form_widget_simple %}
+
+{# Same for select dropdowns #}
+{% block choice_widget_collapsed %}
+{% spaceless %}
+    {% if required and empty_value is none and not empty_value_in_choices and not multiple %}
+        {% set required = false %}
+    {% endif %}
+    <select class="form-control" {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {% if empty_value is not none %}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ empty_value|trans({}, translation_domain) }}</option>
+        {% endif %}
+        {% if preferred_choices|length > 0 %}
+            {% set options = preferred_choices %}
+            {{ block('choice_widget_options') }}
+            {% if choices|length > 0 and separator is not none %}
+                <option disabled="disabled">{{ separator }}</option>
+            {% endif %}
+        {% endif %}
+        {% set options = choices %}
+        {{ block('choice_widget_options') }}
+    </select>
+{% endspaceless %}
+{% endblock choice_widget_collapsed %}

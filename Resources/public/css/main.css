@@ -1,5 +1,6 @@
 body {
-    padding-top: 40px;
+    /* Make main content clear top navbar */
+    padding-top: 70px;
 }
 
 .admin-alert {
@@ -22,10 +23,11 @@ h1 {
  * List
  */
 .admin-list-reset {
-    float: right;
+    float: left;
 }
 
 .admin-list-simple-advanced-search-switch {
+    float: right;
     margin-bottom: 18px;
 }
 
@@ -35,7 +37,18 @@ h1 {
 }
 
 .admin-list-simple-search {
-    margin-right: 6px;
+    float: left;
+    margin-right: 4px;
+}
+
+/* These styles usually come from Bootstrap at >= 768px wide */
+/* Without them, simple search form wraps at mobile size */
+@media (max-width: 767px) {
+    .admin-list-simple-search .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+    }
 }
 
 .admin-list-simple-search form {
@@ -114,6 +127,19 @@ h1 {
     margin-right: 3px;
 }
 
+.admin-list-batch select, .admin-list-max-per-page select {
+    border: 1px solid #ccc;
+    height: 30px;
+}
+
+.admin-list-batch select {
+    width: 220px;
+}
+
+.admin-list-max-per-page select {
+    width: 60px;
+}
+
 .admin-list-max-per-page {
     float: right;
 }
@@ -122,7 +148,62 @@ h1 {
     float: none;
 }
 
-.admin-list-pagination .pagination {
-    margin-top: 0;
+.admin-list-pagination {
+    margin-top: 20px;
     text-align: center;
+}
+
+/*
+//
+// ***** Forms e.g. log-in, vertically aligned (e.g. input below label) *****
+//
+*/
+.form-vertical .form-group, .form-vertical .form-actions {
+    /* Limit width, since inouts are set to 100% */
+    min-width: 200px;
+    max-width: 25%;
+}
+
+.form-actions {
+    /* Block containing Save/Cancel buttons etc. */
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.form-actions span {
+    /* Usually contains the "or" between Save and Cancel */
+    margin: 0 5px;
+}
+
+/*
+//
+// ***** Togglable advanced search form *****
+//
+*/
+.admin-list-advanced-search .form-group {
+    /* Make search field rows display under the rows' titles */
+    display: block;
+    margin: 0 0 10px;
+}
+
+.admin-list-advanced-search .search-option-title label:after {
+    /* Add puntuation after title */
+    content: ':';
+}
+
+.admin-list-advanced-search .search-option {
+    /* Indent around titles */
+    margin: 0 0 15px 20px;
+    padding: 5px 0 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.admin-list-advanced-search .search-option label {
+    /* Labels in form rows, differentiate from titles */
+    font-weight: normal;
+    margin-right: 5px;
+}
+
+.admin-list-advanced-search .search-option select, .admin-list-advanced-search .search-option input {
+    margin-right: 5px;
 }

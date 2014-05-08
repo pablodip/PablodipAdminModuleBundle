@@ -158,11 +158,12 @@ class ListAction extends RouteAction
         $form = null;
         if ($enabled) {
             $formBuilder = $this->get('form.factory')
-                ->createNamedBuilder('form', $this->getOption('advanced_search_parameter'))
+                ->createNamedBuilder($this->getOption('advanced_search_parameter'), 'form')
             ;
             $filters = $this->getAdvancedSearchFilters($fields);
             foreach ($filters as $fieldName => $filter) {
-                $filterFormBuilder = $this->get('form.factory')->createNamedBuilder('form', $fieldName);
+                $fieldData = $fields->get($fieldName);
+                $filterFormBuilder = $this->get('form.factory')->createNamedBuilder($fieldName, 'form', null, array('label' => $fieldData->getLabel()));
                 $filter->buildForm($filterFormBuilder);
                 $formBuilder->add($filterFormBuilder);
             }
@@ -220,6 +221,9 @@ class ListAction extends RouteAction
         }
         if ('boolean' === $type) {
             return new \Pablodip\AdminModuleBundle\Filter\BooleanFilter($this->get('translator'));
+        }
+        if ('integer' === $type) {
+            return new \Pablodip\AdminModuleBundle\Filter\IntegerFilter($this->get('translator'));
         }
 
         throw new \RuntimeException(sprintf('The advanced filter type "%s" cannot be transformed.', $type));

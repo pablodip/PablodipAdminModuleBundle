@@ -19,13 +19,13 @@ $(function () {
     });
 
     $('#admin-list-advanced-search-switch').click(function () {
-        $('#admin-list-advanced-search').toggle();
+        $('#admin-list-advanced-search').slideToggle();
 
         return false;
     });
 
     $('#admin-list-advanced-search-cancel').click(function () {
-        $('#admin-list-advanced-search').hide();
+        $('#admin-list-advanced-search').slideToggle();
 
         return false;
     });

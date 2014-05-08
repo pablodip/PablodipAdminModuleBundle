@@ -13,7 +13,7 @@ namespace Pablodip\AdminModuleBundle\Field\Guesser;
 
 use Pablodip\ModuleBundle\Field\Guesser\FieldGuesserInterface;
 use Pablodip\ModuleBundle\Field\Guesser\FieldOptionGuess;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraint;
 
@@ -29,9 +29,9 @@ class ValidatorFieldGuesser implements FieldGuesserInterface
     /**
      * Constructor.
      *
-     * @param ClassMetadataFactoryInterface $metadataFactory The metadata factory.
+     * @param MetadataFactoryInterface $metadataFactory The metadata factory.
      */
-    public function __construct(ClassMetadataFactoryInterface $metadataFactory)
+    public function __construct(MetadataFactoryInterface $metadataFactory)
     {
         $this->metadataFactory = $metadataFactory;
     }
@@ -43,7 +43,7 @@ class ValidatorFieldGuesser implements FieldGuesserInterface
     {
         $options = array();
 
-        $classMetadata = $this->metadataFactory->getClassMetadata($class);
+        $classMetadata = $this->metadataFactory->getMetadataFor($class);
         // normal and camelized for getters
         foreach (array($fieldName, Container::camelize($fieldName)) as $name) {
             if ($classMetadata->hasMemberMetadatas($name)) {
