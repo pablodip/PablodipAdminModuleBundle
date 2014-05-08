@@ -15,20 +15,6 @@
 
     <div class="admin-list-simple-advanced-search-switch">
 
-        {% if simple_search_enabled %}
-            <div class="admin-list-simple-search">
-                <form action="{{ module.path('list') }}" method="GET" class="form-inline">
-                    <input type="text" class="form-control input-sm" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
-                    {% for parameter in module.parametersToPropagate %}
-                        {% if app.request.query.has(parameter) %}
-                            <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
-                        {% endif %}
-                    {% endfor %}
-                    <input type="submit" value="Search" class="btn btn-primary btn-sm" />
-                </form>
-            </div>
-        {% endif %}
-
         {% if advanced_search_enabled %}
             <div class="admin-list-advanced-search-switch">
                 <a href="#" id="admin-list-advanced-search-switch">
@@ -38,6 +24,18 @@
         {% endif %}
 
         {% if simple_search_enabled %}
+        <div class="admin-list-simple-search">
+            <form action="{{ module.path('list') }}" method="GET" class="form-inline">
+                <input type="text" class="form-control input-sm" name="{{ module.actionOption('list', 'simple_search_parameter') }}" value="{{ simple_search_value }}" />
+                {% for parameter in module.parametersToPropagate %}
+                    {% if app.request.query.has(parameter) %}
+                        <input type="hidden" name="{{ parameter }}" value="{{ app.request.query.get(parameter) }}" />
+                    {% endif %}
+                {% endfor %}
+                <input type="submit" value="Search" class="btn btn-primary btn-sm" />
+            </form>
+        </div>
+
         <div class="admin-list-reset">
             <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default btn-sm">Reset</a>
         </div>
