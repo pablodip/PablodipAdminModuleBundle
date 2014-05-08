@@ -37,7 +37,7 @@
             </div>
         {% endif %}
 
-        {% if simple_search_enabled or advanced_search_enabled %}
+        {% if simple_search_enabled %}
         <div class="admin-list-reset">
             <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default btn-sm">Reset</a>
         </div>
@@ -84,8 +84,10 @@
                     {% endfor %}
                     <div class="form-actions">
                         <input type="submit" value="Search" class="btn btn-primary btn-sm" />
-                        <span>or</span>
+                        <span>&nbsp;</span>
                         <a href="#" id="admin-list-advanced-search-cancel" class="btn btn-default btn-sm">Cancel</a>
+                        <span>&nbsp;</span>
+                        <a href="{{ module.path('list', { 'reset': true }) }}" class="btn btn-default btn-sm">Reset</a>
                     </div>
                 </fieldset>
             </form>
